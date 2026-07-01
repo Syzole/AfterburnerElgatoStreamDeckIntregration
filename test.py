@@ -1,4 +1,5 @@
 import ctypes
+import time
 from ctypes import wintypes
 
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
@@ -103,40 +104,53 @@ def main():
         return
 
     try:
-        header = ctypes.cast(view, ctypes.POINTER(MAHM_SHARED_MEMORY_HEADER)).contents
+        while True:
+            # clear
+            print("\033[2J\033[H", end="")
 
-        if header.dwSignature != SIGNATURE:
-            print("Invalid MAHM signature.")
-            return
+            header = ctypes.cast(
+                view, ctypes.POINTER(MAHM_SHARED_MEMORY_HEADER)
+            ).contents
 
-        print("Header")
-        print("-" * 60)
-        print("Version      :", header.dwVersion)
-        print("Header Size  :", header.dwHeaderSize)
-        print("Entry Size   :", header.dwEntrySize)
-        print("Entry Count  :", header.dwNumEntries)
-        print()
+            if header.dwSignature != SIGNATURE:
+                print("Invalid MAHM signature.")
+                break
 
-        base = view + header.dwHeaderSize
+            print("Header")
+            print("-" * 60)
+            print("Version      :", header.dwVersion)
+            print("Header Size  :", header.dwHeaderSize)
+            print("Entry Size   :", header.dwEntrySize)
+            print("Entry Count  :", header.dwNumEntries)
+            print()
 
-        print("Sensors")
-        print("-" * 60)
+            base = view + header.dwHeaderSize
 
-        for i in range(header.dwNumEntries):
-            addr = base + i * header.dwEntrySize
+            print("Sensors")
+            print("-" * 60)
 
-            entry = ctypes.cast(addr, ctypes.POINTER(MAHM_SHARED_MEMORY_ENTRY)).contents
+            for i in range(header.dwNumEntries):
+                addr = base + i * header.dwEntrySize
 
-            name = entry.szSrcName.decode(errors="ignore").rstrip("\0")
-            units = entry.szSrcUnits.decode(errors="ignore").rstrip("\0")
+                entry = ctypes.cast(
+                    addr, ctypes.POINTER(MAHM_SHARED_MEMORY_ENTRY)
+                ).contents
 
-            print(f"{i:02d} | {name:30} {entry.data:10.2f} {units}")
+                name = entry.szSrcName.decode(errors="ignore").rstrip("\0")
+                units = entry.szSrcUnits.decode(errors="ignore").rstrip("\0")
+
+                print(f"{i:03d} | {name:30} {entry.data:10.2f} {units}")
+
+            print("\nPress Ctrl+C to quit.")
+
+            time.sleep(1)
+
+    except KeyboardInterrupt:
+        print("\nExiting...")
 
     finally:
         UnmapViewOfFile(view)
         CloseHandle(hMap)
-
-    input("Press Enter...")
 
 
 if __name__ == "__main__":
