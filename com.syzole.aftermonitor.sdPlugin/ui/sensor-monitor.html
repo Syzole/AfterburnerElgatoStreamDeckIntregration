@@ -9,12 +9,26 @@
 
 <body>
     <sdpi-item label="Sensor">
-        <sdpi-select setting="sensorId" datasource="getSensors" placeholder="Select sensor" loading="Loading sensors...">
+        <sdpi-select setting="sensorId" datasource="getSensors" placeholder="Select sensor" loading="Loading sensors..." hot-reload show-refresh>
         </sdpi-select>
+    </sdpi-item>
+
+    <sdpi-item label="Label">
+        <sdpi-textfield setting="customLabel" placeholder="Auto"></sdpi-textfield>
     </sdpi-item>
 
     <sdpi-item label="Show Label">
         <sdpi-checkbox setting="showLabel" default="true"></sdpi-checkbox>
+    </sdpi-item>
+
+    <sdpi-item label="Poll Interval">
+        <sdpi-select setting="pollIntervalMs" global default="1000">
+            <option value="250">250 ms</option>
+            <option value="500">500 ms</option>
+            <option value="1000">1 second</option>
+            <option value="2000">2 seconds</option>
+            <option value="5000">5 seconds</option>
+        </sdpi-select>
     </sdpi-item>
 </body>
 

@@ -13,7 +13,7 @@ const sdPlugin = "com.syzole.aftermonitor.sdPlugin";
  */
 const config = {
 	input: "src/plugin.ts",
-	external: ["koffi"],
+	external: ["koffi", "@napi-rs/canvas"],
 	output: {
 		file: `${sdPlugin}/bin/plugin.js`,
 		sourcemap: isWatching,

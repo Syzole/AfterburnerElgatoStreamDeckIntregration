@@ -80,7 +80,6 @@ export function formatSensorValue(value: number | null, units: string): string {
 export class MahmReader {
 	private mapHandle: unknown | null = null;
 	private viewPtr: unknown | null = null;
-	private view: DataView | null = null;
 	private nextRetryAt = 0;
 
 	disconnect(): void {
@@ -95,7 +94,7 @@ export class MahmReader {
 
 		this.mapHandle = null;
 		this.viewPtr = null;
-		this.view = null;
+		this.nextRetryAt = 0;
 	}
 
 	read(): MahmSnapshot {
@@ -107,7 +106,7 @@ export class MahmReader {
 			return { connected: false, sensors: [], timestamp: Date.now() };
 		}
 
-		const view = this.view;
+		const view = this.getLiveView();
 		if (!view) {
 			return { connected: false, sensors: [], timestamp: Date.now() };
 		}
@@ -167,8 +166,17 @@ export class MahmReader {
 		}
 	}
 
+	private getLiveView(): DataView | null {
+		if (!this.viewPtr) {
+			return null;
+		}
+
+		const buffer = koffi.view(this.viewPtr, MAX_VIEW_SIZE);
+		return new DataView(buffer);
+	}
+
 	private ensureConnected(): boolean {
-		if (this.view) {
+		if (this.viewPtr) {
 			return true;
 		}
 
@@ -204,7 +212,6 @@ export class MahmReader {
 			const buffer = koffi.view(viewPtr, MAX_VIEW_SIZE);
 			this.mapHandle = mapHandle;
 			this.viewPtr = viewPtr;
-			this.view = new DataView(buffer);
 			return true;
 		}
 

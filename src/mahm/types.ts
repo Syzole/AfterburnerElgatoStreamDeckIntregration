@@ -1,6 +1,6 @@
 export const MAHM_SIGNATURE = 0x4d41484d;
 export const MAHM_MAX_STALENESS_SECONDS = 15;
-export const MAHM_RETRY_INTERVAL_MS = 20_000;
+export const MAHM_RETRY_INTERVAL_MS = 2_000;
 export const MAHM_ENTRY_SIZE = 1324;
 export const MAHM_STRING_LENGTH = 260;
 
