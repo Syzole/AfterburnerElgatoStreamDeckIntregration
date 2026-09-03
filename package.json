@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "@elgato/streamdeck": "^1.0.0",
+        "@napi-rs/canvas": "^1.0.8",
         "koffi": "^3.2.0"
     }
 }
