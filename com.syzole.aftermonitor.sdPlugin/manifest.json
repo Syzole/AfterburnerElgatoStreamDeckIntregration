@@ -1,0 +1,43 @@
+{
+	"Name": "AfterMonitor",
+	"Version": "0.1.0.0",
+	"Author": "Syzole",
+	"Actions": [
+		{
+			"Name": "Sensor Monitor",
+			"UUID": "com.syzole.aftermonitor.sensor",
+			"Icon": "imgs/actions/counter/icon",
+			"Tooltip": "Displays a live sensor value from MSI Afterburner.",
+			"PropertyInspectorPath": "ui/sensor-monitor.html",
+			"Controllers": [
+				"Keypad"
+			],
+			"States": [
+				{
+					"Image": "imgs/actions/counter/key",
+					"TitleAlignment": "middle"
+				}
+			]
+		}
+	],
+	"Category": "AfterMonitor",
+	"CategoryIcon": "imgs/plugin/category-icon",
+	"CodePath": "bin/plugin.js",
+	"Description": "Monitor your system vitals with MSI Afterburner. Requires MSI Afterburner to be running with hardware monitoring enabled.",
+	"Icon": "imgs/plugin/marketplace",
+	"SDKVersion": 2,
+	"Software": {
+		"MinimumVersion": "6.5"
+	},
+	"OS": [
+		{
+			"Platform": "windows",
+			"MinimumVersion": "10"
+		}
+	],
+	"Nodejs": {
+		"Version": "20",
+		"Debug": "enabled"
+	},
+	"UUID": "com.syzole.aftermonitor"
+}
